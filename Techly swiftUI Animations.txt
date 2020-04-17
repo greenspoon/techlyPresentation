@@ -1,0 +1,110 @@
+Techly swiftUI Animations:
+
+Disclaimer
+
+Agenda:
+
+- SwiftUI
+    - SwitfUI is a Declarative UI Framework and in comparission to UIKit which looks mostly like this: swiftUI looks like this
+
+    - Apple says its "innovative, exceptionally simple" und "works seamlessly with new Xcode design tools"
+
+    - I'm all in for the innovative and exceptionally simple part but: Its not there yet (works not  so seamlessly sometimes)
+
+    - But we will come there I think. it looks pretty good already!
+
+Next lets talk about Animations in general
+
+- Animations
+    - This is what the wikipedia artical says:
+
+    - Animation comes from the latin word animare and means "bring to live"
+    - Wikipedia also shows you this animated horse: animated horse
+
+    - And this is excactly what we are trying to achive with animations in User interfaces.
+    - Not horses but,
+    We want things for example to be more realistic, funny or more lively so the user sticks around and is entertainted.
+
+- Anmations in UIKit:
+    - it all started with CABasicAnimation with iOS 2.0
+        - You define a CABasicAnimation 
+        - You say what you want to animated. In this case its the opacity
+        - You define from which to which value it should animated
+        and the duration
+        - you add your animation to your CALayer
+        - And UIKit will make some magic.
+    - Then with iOS 4 a convinient method got introduced
+    [UIView animateWithDuration]
+    With that every thing got a little bit more easier and more magic.
+    because you just through your changes in there it automagicly gets animated.
+
+- Animation in swiftUI:
+
+    - In swiftUI you define states which you can change on specific triggers. For example a tap.
+
+    - Other than in UIKit changes are not animated implicitly
+
+    - Talk about the video
+        - you define a bool variable 
+        - you can toggle it with a tap
+        - swiftUI recognizes a change and rerenders the UI
+        - because no explicit animations are defined the change is very sharp
+        - Thats not what we want.
+        - We whant something like the horse from wikipedia
+
+    - How are we achiving that?
+        - by adding .animation after the element that should animate
+        - and we pass a Animation into that function
+        - an Animation could be a lot of things
+            - There is a lot to explore
+        - Or we can wrap the state change in a withAnimation block
+        an opionally pass an Animation like before
+        - What about Keyframe or chaining animations?
+            - lets say you want the rectangle to move to the right and then scale
+            - The naiv approve would look something like this
+            -  You would think that chaining things with a delay might work. 
+            But thats wrong.
+            - Remember this is declerative programming
+            - And swiftUI renders what is defined at once
+            - So we have to go an unusual route
+            - Yes DispatchQueue asyncAfter
+    - Other ways to animate in swiftUI
+        - GeometryEffect/AnimatableModifier
+            - I will just contentrate on GeometryEffect
+            - You can use that to create your own animation effect using Math.
+            - To animate the GeometryEffect you have to specify a computed var called animatableData
+            So swiftUI knows what values should be animated.
+            Also those values must be of type VectorArithmetic
+            - So swiftUI can do math operations like plus minus and scale() 
+                - Multiplies each component of `self` by the scalar `rhs`
+            - GeometryEffect example from website
+        - Transitions
+            - transitions are here so the appearance of a view can be animated
+            - as you can see you can combine transitions and create your own custom ones
+
+- Mein Projekt:
+    - Challanges:
+        - learning a diffrent programming paradigm - paradime
+            - wrap your head around a new paradigm is not as easy as you might think.
+            - the first time I saw swiftUI at the WWDC I thought: That looks really nice and easy but you have to
+            wrap your head around this.
+            - you are declaring stuff which will then later just magically work or not.
+        - Falling animation of the coins
+            - I wanted to make little coins falling out of the big coin when you tap it.
+            - I tried a lot of things and even build it first in UIKit. - show UIKit 
+            - Then I've done it like that:
+                - I created a @State variable called fallingModels which is an array of a model with a uuid
+                - this uuid is needed so swiftUI can iterate over it in a ForEach Loop
+                - Also as you can see here I had to do "asynAfter" in "onApear" again to get rid of the already hidden coins
+                - In the FallingCoin itself I created a GeometryEffect modifier so the coin can actually fall
+                - This modifer is triggered by the @State variable isFalling which is toggled in yet another onAppear method in which a withAnimation block delays and animates the change.
+                - Also I created a randomX variable so that the angle of the falling is not the same everytime.
+                - Saving states
+    - After this presentation I will upload this project to gitlab and I invite you to play around with it yourself.
+
+- Conclusion Mate or Enemy?
+    - I would say that swiftUI has a lot of cool new ways to deal with animations
+    - It takes some time to wrap your head around this new pardigm,
+     but I think once we will use it on a daily basis it will because awesome.
+    - So my conclusion is animations in swiftUI are maybe at first an enemy but once
+    you use it will because a MATE or a Friend.
